@@ -1,0 +1,66 @@
+name: Claude Issue Triage
+
+on:
+  issues:
+    types: [opened, edited]
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Run Claude Issue Triage
+        id: claude-triage
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+
+          claude_args: '--allowed-tools "Bash(gh label list),Bash(gh issue view *),Bash(gh issue edit *),Bash(gh issue comment *),Bash(gh api *)"'
+
+          prompt: |
+            Analiza el issue #${{ github.event.issue.number }} de este repositorio y realiza un triage automático.
+
+            Repositorio: ${{ github.repository }}
+
+            Pasos a seguir:
+
+            1. Lee el issue completo, incluyendo comentarios existentes:
+               `gh issue view ${{ github.event.issue.number }} --json title,body,labels,comments`
+
+            2. Consulta los labels disponibles en el repo con `gh label list` y elige **únicamente
+               entre esos labels existentes** (no crees labels nuevos). Asigna los que correspondan
+               con `gh issue edit ${{ github.event.issue.number }} --add-label "<label>"`, sin quitar
+               labels que ya haya puesto una persona.
+
+            3. Revisa el código relevante del repositorio (`game.js`, `index.html`, `style.css`) para
+               fundamentar tu análisis. Este es un juego de Tetris en JavaScript vanilla (ver CLAUDE.md
+               para la arquitectura: manejo de estado, colisiones, loop del juego, renderizado, etc.).
+
+            4. Busca en los comentarios existentes del issue uno que contenga el marcador oculto
+               `<!-- claude-triage -->`.
+               - Si **no existe**, publica un comentario nuevo con `gh issue comment ${{ github.event.issue.number }} --body "..."`.
+               - Si **ya existe**, actualízalo en vez de crear uno nuevo, usando `gh api` con PATCH a
+                 `/repos/${{ github.repository }}/issues/comments/<id>` (obtén el `<id>` del comentario
+                 encontrado).
+
+               El comentario (nuevo o actualizado) debe:
+               - Empezar con el marcador oculto `<!-- claude-triage -->` en la primera línea.
+               - Estar redactado en **español**.
+               - Tener esta estructura:
+                 - **Resumen**: qué describe el issue.
+                 - **Causa probable / área afectada**: referencia archivos y funciones concretas de
+                   `game.js` (u otros) cuando aplique.
+                 - **Enfoque de solución sugerido**: pasos a alto nivel para implementar la solución
+                   más adelante (no implementes código, solo diagnostica).
+                 - **Labels asignados**: cuáles y por qué.
+
+            Sé conciso pero específico. El objetivo de este diagnóstico es servir de base para que,
+            en una tarea posterior, alguien implemente la solución real.
