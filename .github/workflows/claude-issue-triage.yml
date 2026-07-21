@@ -54,6 +54,9 @@ jobs:
                El comentario (nuevo o actualizado) debe:
                - Empezar con el marcador oculto `<!-- claude-triage -->` en la primera línea.
                - Estar redactado en **español**.
+               - Estar escrito en formato **Markdown** válido y bien interpretable por GitHub
+                 (encabezados, listas, negritas, bloques de código con \`\`\` para fragmentos de
+                 código, etc.).
                - Tener esta estructura:
                  - **Resumen**: qué describe el issue.
                  - **Causa probable / área afectada**: referencia archivos y funciones concretas de
