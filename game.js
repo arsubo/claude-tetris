@@ -39,8 +39,13 @@ const overlay = document.getElementById('overlay');
 const overlayTitle = document.getElementById('overlay-title');
 const overlayScore = document.getElementById('overlay-score');
 const restartBtn = document.getElementById('restart-btn');
+const themeToggleBtn = document.getElementById('theme-toggle');
+const themeToggleIcon = document.getElementById('theme-toggle-icon');
+
+const THEME_KEY = 'tetris-theme';
 
 let board, current, next, score, lines, level, paused, gameOver, lastTime, dropAccum, dropInterval, animId;
+let gridLineColor = '#22222e';
 
 function createBoard() {
   return Array.from({ length: ROWS }, () => new Array(COLS).fill(0));
@@ -169,7 +174,7 @@ function drawBlock(context, x, y, colorIndex, size, alpha) {
 }
 
 function drawGrid() {
-  ctx.strokeStyle = '#22222e';
+  ctx.strokeStyle = gridLineColor;
   ctx.lineWidth = 0.5;
   for (let c = 1; c < COLS; c++) {
     ctx.beginPath();
@@ -300,5 +305,21 @@ document.addEventListener('keydown', e => {
 });
 
 restartBtn.addEventListener('click', init);
+
+function applyTheme(theme) {
+  document.body.classList.toggle('light-theme', theme === 'light');
+  themeToggleIcon.textContent = theme === 'light' ? '☀️' : '🌙';
+  themeToggleBtn.setAttribute('aria-pressed', String(theme === 'light'));
+  themeToggleBtn.setAttribute('aria-label', theme === 'light' ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro');
+  gridLineColor = getComputedStyle(document.body).getPropertyValue('--grid-line').trim();
+}
+
+themeToggleBtn.addEventListener('click', () => {
+  const theme = document.body.classList.contains('light-theme') ? 'dark' : 'light';
+  localStorage.setItem(THEME_KEY, theme);
+  applyTheme(theme);
+});
+
+applyTheme(localStorage.getItem(THEME_KEY) === 'light' ? 'light' : 'dark');
 
 init();
