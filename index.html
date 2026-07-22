@@ -57,10 +57,43 @@
       </aside>
     </div>
 
+    <div id="start-screen" class="overlay">
+      <div class="overlay-box">
+        <p class="records-heading">TOP 5 RECORDS</p>
+        <table class="records-table" id="start-table">
+          <tbody></tbody>
+        </table>
+        <div class="records-stats">
+          <span>Mejor combo: <strong id="start-best-combo">0</strong></span>
+          <span>Máx. líneas: <strong id="start-max-lines">0</strong></span>
+        </div>
+        <button id="play-btn" type="button">Jugar</button>
+        <button id="reset-records-btn-start" type="button" class="reset-records-btn">Reiniciar records</button>
+      </div>
+    </div>
+
     <div id="overlay" class="overlay hidden">
       <div class="overlay-box">
         <p id="overlay-title">GAME OVER</p>
         <p id="overlay-score"></p>
+
+        <div id="records-section" class="records-section hidden">
+          <form id="score-name-form" class="score-name-form hidden">
+            <label for="player-name">¡Nuevo record! Nombre:</label>
+            <input type="text" id="player-name" maxlength="12" autocomplete="off" />
+            <button type="submit">Guardar</button>
+          </form>
+          <p class="records-heading">TOP 5 RECORDS</p>
+          <table class="records-table" id="game-over-table">
+            <tbody></tbody>
+          </table>
+          <div class="records-stats">
+            <span>Mejor combo: <strong id="game-over-best-combo">0</strong></span>
+            <span>Máx. líneas: <strong id="game-over-max-lines">0</strong></span>
+          </div>
+          <button id="reset-records-btn-gameover" type="button" class="reset-records-btn">Reiniciar records</button>
+        </div>
+
         <button id="restart-btn">Reiniciar</button>
       </div>
     </div>
