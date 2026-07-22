@@ -44,6 +44,22 @@ const themeToggleIcon = document.getElementById('theme-toggle-icon');
 
 const THEME_KEY = 'tetris-theme';
 
+function readStoredTheme() {
+  try {
+    return localStorage.getItem(THEME_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function writeStoredTheme(theme) {
+  try {
+    localStorage.setItem(THEME_KEY, theme);
+  } catch {
+    // Almacenamiento no disponible (file://, navegación privada, etc.)
+  }
+}
+
 let board, current, next, score, lines, level, paused, gameOver, lastTime, dropAccum, dropInterval, animId;
 let gridLineColor = '#22222e';
 
@@ -316,10 +332,10 @@ function applyTheme(theme) {
 
 themeToggleBtn.addEventListener('click', () => {
   const theme = document.body.classList.contains('light-theme') ? 'dark' : 'light';
-  localStorage.setItem(THEME_KEY, theme);
+  writeStoredTheme(theme);
   applyTheme(theme);
 });
 
-applyTheme(localStorage.getItem(THEME_KEY) === 'light' ? 'light' : 'dark');
+applyTheme(readStoredTheme() === 'light' ? 'light' : 'dark');
 
 init();
