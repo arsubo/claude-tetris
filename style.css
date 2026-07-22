@@ -150,6 +150,33 @@ body {
   transition: background 0.2s ease, border-color 0.2s ease;
 }
 
+/* ---- Selector de skin ---- */
+.skin-select {
+  background: var(--kbd-bg);
+  border: 1px solid var(--kbd-border);
+  color: var(--kbd-text);
+  font-family: inherit;
+  font-size: 12px;
+  padding: 6px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.skin-select:hover,
+.skin-select:focus {
+  border-color: var(--value);
+  outline: none;
+}
+
+/* ---- Skin: Neón ---- */
+body.skin-neon #board,
+body.skin-neon #next-canvas {
+  background: #000000;
+  border-color: #00fff2;
+  box-shadow: 0 0 24px rgba(0, 255, 242, 0.25);
+}
+
 /* ---- Controles ---- */
 .controls ul {
   list-style: none;
