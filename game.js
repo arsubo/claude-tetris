@@ -314,12 +314,28 @@ function applyTheme(theme) {
   gridLineColor = getComputedStyle(document.body).getPropertyValue('--grid-line').trim();
 }
 
+function readStoredTheme() {
+  try {
+    return localStorage.getItem(THEME_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function writeStoredTheme(theme) {
+  try {
+    localStorage.setItem(THEME_KEY, theme);
+  } catch {
+    // Storage unavailable (e.g. file:// origin, private browsing) - theme still applies for this session.
+  }
+}
+
 themeToggleBtn.addEventListener('click', () => {
   const theme = document.body.classList.contains('light-theme') ? 'dark' : 'light';
-  localStorage.setItem(THEME_KEY, theme);
+  writeStoredTheme(theme);
   applyTheme(theme);
 });
 
-applyTheme(localStorage.getItem(THEME_KEY) === 'light' ? 'light' : 'dark');
+applyTheme(readStoredTheme() === 'light' ? 'light' : 'dark');
 
 init();
