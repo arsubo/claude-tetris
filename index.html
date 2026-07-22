@@ -34,6 +34,16 @@
           <canvas id="next-canvas" width="120" height="120"></canvas>
         </div>
 
+        <div class="panel-section">
+          <span class="label">SKIN</span>
+          <select id="skin-select" class="skin-select">
+            <option value="retro">Retro</option>
+            <option value="neon">Neón</option>
+            <option value="pastel">Pastel</option>
+            <option value="pixel">Pixel Art</option>
+          </select>
+        </div>
+
         <div class="panel-section controls">
           <span class="label">CONTROLS</span>
           <ul>
@@ -42,16 +52,76 @@
             <li><kbd>↓</kbd> bajar</li>
             <li><kbd>Space</kbd> caída</li>
             <li><kbd>P</kbd> pausa</li>
+            <li><kbd>Esc</kbd> pausa</li>
           </ul>
         </div>
       </aside>
     </div>
 
-    <div id="overlay" class="overlay hidden">
+    <div id="start-screen" class="overlay">
       <div class="overlay-box">
+        <p class="records-heading">TOP 5 RECORDS</p>
+        <table class="records-table" id="start-table">
+          <tbody></tbody>
+        </table>
+        <div class="records-stats">
+          <span>Mejor combo: <strong id="start-best-combo">0</strong></span>
+          <span>Máx. líneas: <strong id="start-max-lines">0</strong></span>
+        </div>
+        <button id="play-btn" type="button">Jugar</button>
+        <button id="reset-records-btn-start" type="button" class="reset-records-btn">Reiniciar records</button>
+      </div>
+    </div>
+
+    <div id="overlay" class="overlay hidden">
+      <div class="overlay-box" id="overlay-gameover">
         <p id="overlay-title">GAME OVER</p>
         <p id="overlay-score"></p>
+
+        <div id="records-section" class="records-section hidden">
+          <form id="score-name-form" class="score-name-form hidden">
+            <label for="player-name">¡Nuevo record! Nombre:</label>
+            <input type="text" id="player-name" maxlength="12" autocomplete="off" />
+            <button type="submit">Guardar</button>
+          </form>
+          <p class="records-heading">TOP 5 RECORDS</p>
+          <table class="records-table" id="game-over-table">
+            <tbody></tbody>
+          </table>
+          <div class="records-stats">
+            <span>Mejor combo: <strong id="game-over-best-combo">0</strong></span>
+            <span>Máx. líneas: <strong id="game-over-max-lines">0</strong></span>
+          </div>
+          <button id="reset-records-btn-gameover" type="button" class="reset-records-btn">Reiniciar records</button>
+        </div>
+
         <button id="restart-btn">Reiniciar</button>
+      </div>
+
+      <div class="overlay-box pause-menu hidden" id="pause-menu">
+        <p class="pause-title">PAUSA</p>
+
+        <div class="pause-actions">
+          <button id="resume-btn">Reanudar</button>
+          <button id="pause-restart-btn">Reiniciar</button>
+          <button id="toggle-controls-btn" type="button" aria-expanded="false">Ver controles</button>
+        </div>
+
+        <div class="pause-controls hidden" id="pause-controls">
+          <ul>
+            <li><kbd>←</kbd><kbd>→</kbd> mover</li>
+            <li><kbd>↑</kbd> rotar</li>
+            <li><kbd>↓</kbd> bajar</li>
+            <li><kbd>Space</kbd> caída</li>
+            <li><kbd>P</kbd> pausa</li>
+            <li><kbd>Esc</kbd> pausa</li>
+          </ul>
+        </div>
+
+        <div class="pause-level-select">
+          <label for="start-level-select">Nivel inicial</label>
+          <select id="start-level-select"></select>
+        </div>
       </div>
     </div>
   </div>
